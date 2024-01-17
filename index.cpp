@@ -1,5 +1,6 @@
 #include<bits/stdc++.h>
 #include "antoine_solver.h"
+#include "linear_system_solver.h"
 using namespace std;
 double P_total=1;
 int no_of_comp=2;
@@ -19,7 +20,32 @@ int main(){
         //calcution of S (S[1][2]=k[1][2]*V[2]/L[2]);
         double S12=S_calculator(K[1][2],V[2],L[2]);
         //make matrix A,X and B for A*X=C
+    vector<vector<double>> A ;
+    vector<double> B;
+
+
+
         //matrix solver
+        
+    try 
+    {
+        vector<double> X = solveLinearSystem(A, B);
+
+    } 
+    catch (const std::invalid_argument& e) 
+    {
+        cerr << "Error: " << e.what() << std::endl;
+    }
+    //we got X all l
+
+
+    //now we calculate all xij;
+
+    
+    //write function for calculation of xij;
+
+
+
 
                   
         
