@@ -45,6 +45,9 @@ double findTemperature(double initialGuess, double x1, double A1, double B1, dou
 
     return T_old;
 }
+double k_calculator(double T, double A, double B, double C,double P_total){
+ return calculateSaturationPressure(T,A,B,C)/P_total;
+}
 
 #endif // ANTOINE_SOLVER_H
 //how to use in cpp 
