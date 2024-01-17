@@ -6,9 +6,15 @@
 #include <cmath>
 #include <iostream>
 using namespace std;
+// Function to calculate saturation vapor pressure using Antoine equation
+double calculateSaturationPressure(double T, double A, double B, double C) {
+    return pow(10, (A - B / (T + C)));
+}
 // Function to calculate the total vapor pressure equation
 double totalPressureEquation(double T, double x1, double A1, double B1, double C1, double x2, double A2, double B2, double C2) {
-    return x1 * pow(10, (A1 - B1 / (T + C1))) + x2 * pow(10, (A2 - B2 / (T + C2)));
+    double P1=calculateSaturationPressure(T,A1,B1,C1);
+    double P2=calculateSaturationPressure(T,A2,B2,C2);
+    return x1 * P1 + x2 * P2;
 }
 
 // Derivative of the total vapor pressure equation with respect to temperature
