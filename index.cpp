@@ -12,7 +12,7 @@ int main(){
    int K[2][4],V[5],L[5];//make it vector
    float A1,B1,C1,T;
    while(ct--){
-    int ctt=5;
+    int ctt = 5;
      while(ctt--)
      {
         //calculation of K (y=K*x);
