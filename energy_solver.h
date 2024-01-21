@@ -5,31 +5,33 @@
 
 #include <cmath>
 #include <iostream>
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
 // Function to calculate enthalpy for a component
-double calculateEnthalpy(double A, double B, double C, double T) {
-    return A + B * T + C * T * T;
-}
+// double calculateEnthalpy(double A, double B, double C, double T) {
+//     return A + B * T + C * T * T;
+// }
 
 // Function to calcualte the vapour phase composition.
 inline vector<vector<double>> calculate_vij(
-    const vector<vector<double>>& Sij,
-    const vector<vector<double>>& lij
-) {
+    const vector<vector<double>> &Sij,
+    const vector<vector<double>> &lij)
+{
     vector<vector<double>> vij;
 
     // Assuming Sij and lij have the same dimensions
     size_t numComponents = Sij.size();
-    size_t numStages = Sij[0].size();  // Assuming all components have the same number of stages
+    size_t numStages = Sij[0].size(); // Assuming all components have the same number of stages
 
     // Resize vij to match the dimensions of Sij and lij
     vij.resize(numComponents, vector<double>(numStages, 0.0));
 
     // Calculate vij
-    for (size_t i = 1; i < numComponents; ++i) {
-        for (size_t j = 2; j < numStages; ++j) {
+    for (size_t i = 1; i < numComponents; ++i)
+    {
+        for (size_t j = 2; j < numStages; ++j)
+        {
             vij[i][j] = Sij[i][j] * lij[i][j];
         }
     }
@@ -38,30 +40,121 @@ inline vector<vector<double>> calculate_vij(
 }
 
 inline vector<vector<double>> calculate_Yij(
-    const vector<vector<double>>& vij
-) {
+    const vector<vector<double>> &vij)
+{
     vector<vector<double>> Yij;
 
     // Assuming vij have the correct dimension
     size_t numComponents = vij.size();
-    size_t numStages = vij[0].size();  // Assuming all components have the same number of stages
+    size_t numStages = vij[0].size(); // Assuming all components have the same number of stages
 
     // Resize Yij to match the dimensions of vij
     Yij.resize(numComponents, vector<double>(numStages, 0.0));
 
     // Calculate Yij
-    for(size_t j = 2; j < numStages; ++j){
+    for (size_t j = 2; j < numStages; ++j)
+    {
         double sumofall = 0.0;
-        for(size_t i = 1; i< numComponents; ++i){
+        for (size_t i = 1; i < numComponents; ++i)
+        {
             sumofall += vij[i][j];
         }
-        for(size_t i = 1; i< numComponents; ++i) {
+        for (size_t i = 1; i < numComponents; ++i)
+        {
             Yij[i][j] = vij[i][j] / sumofall;
         }
-
     }
     return Yij;
 }
 
+inline double calculate_enthalpy(vector<double> &param, double temp)
+{
+    double q1 = param[0];
+    double q2 = param[1] * temp;
+    double q3 = param[2] * temp * temp;
+    return q1 + q2 + q3;
+}
 
-#endif  // ENERGY_SOLVER_H
+inline vector<vector<double>> calculate_Hij(vector<vector<double>> &H_param, vector<double> &T)
+{
+    vector<vector<double>> Hij;
+
+    // Assuming H_param and T have the correct dimension
+    size_t numComponents = H_param.size();
+    size_t numStages = T.size(); // Assuming all components have the same number of stages
+
+    // Resize Hij to match the dimensions of vij
+    Hij.resize(numComponents, vector<double>(numStages, 0.0));
+
+    for (size_t j = 1; j < numStages; ++j)
+    {
+        for (size_t i = 1; i < numComponents; ++i)
+        {
+            Hij[i][j] = calculate_enthalpy(H_param[i], T[j]);
+        }
+    }
+    return Hij;
+}
+
+inline vector<vector<double>> calculate_hij(vector<vector<double>> &h_param, vector<double> &T)
+{
+    vector<vector<double>> hij;
+
+    // Assuming H_param and T have the correct dimension
+    size_t numComponents = h_param.size();
+    size_t numStages = T.size(); // Assuming all components have the same number of stages
+
+    // Resize Hij to match the dimensions of vij
+    hij.resize(numComponents, vector<double>(numStages, 0.0));
+
+    for (size_t j = 1; j < numStages; ++j)
+    {
+        for (size_t i = 1; i < numComponents; ++i)
+        {
+            hij[i][j] = calculate_enthalpy(h_param[i], T[j]);
+        }
+    }
+    return hij;
+}
+
+inline vector<double> calculate_Hi(vector<vector<double>> &Hij, vector<vector<double>> &Yij)
+{
+    vector<double> Hi;
+
+    size_t numComponents = Hij.size();
+    size_t numStages = Hij[0].size();
+
+    for(size_t j = 2; j<numStages; ++j)
+    {
+        double sumofallcomp = 0.0;
+        for(size_t i = 1; i<numComponents; ++i)
+        {
+            sumofallcomp += (Yij[i][j]*Hij[i][j]);
+        }
+        Hi[j] = sumofallcomp;
+    }
+    return Hi;
+}
+
+inline vector<double> calculate_hi(vector<vector<double>> &hij, vector<vector<double>> &xij)
+{
+    vector<double> hi;
+
+    size_t numComponents = hij.size();
+    size_t numStages = hij[0].size();
+
+    for(size_t j = 1; j<numStages; ++j)
+    {
+        double sumofallcomp = 0.0;
+        for(size_t i = 1; i<numComponents; ++i)
+        {
+            sumofallcomp += (xij[i][j]*hij[i][j]);
+        }
+        hi[j] = sumofallcomp;
+    }
+    return hi;
+}
+
+
+
+#endif // ENERGY_SOLVER_H

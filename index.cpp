@@ -46,8 +46,24 @@ int main()
       //  Find the temperature using Newton's method
       double T1 = findTemperature(initialGuess, x1, A1, B1, C1, x2, A2, B2, C2, P_total, tolerance);
     }
+    // Initializing and calculating vij.
     vector<vector<double> > vij = calculate_vij(Sij,lij);
+    // Initializing and calculating Yij.
     vector<vector<double> > Yij = calculate_Yij(vij);
+
+    // Assuming that we've taken Enthalpy parameters for every component in 2D vectors named H_param and h_param.
+
+    // Initializing and calculating Hij.
+    vector<vector<double> > Hij = calculate_Hij(H_param,T);
+
+    // Initializing and calculating hij.
+    vector<vector<double> > hij = calculate_hij(h_param,T);
+
+    // Initializing and calculating Hi.
+    vector<double> Hi = calculate_Hi(Hij,Yij);
+
+    // Initializing and calculating hi.
+    vector<double> hi = calculate_hi(hij,xij);
 
   }
   return 0;
