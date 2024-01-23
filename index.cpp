@@ -10,9 +10,6 @@ int feed_mass_flow = 1;
 double D=0.5;
 int main()
 {
-
- 
-  // make it vector
   vector<double>T(no_of_stages+1),A(no_of_comp+1),
   B(no_of_comp+1),C(no_of_comp+1),V(no_of_stages+1),
   L(no_of_stages+1),lf(no_of_comp+1);
@@ -23,7 +20,7 @@ int main()
 
 
 
-   
+   //loop2 needs T,V,L
     while (true)
     {
       // calculation of K (y=K*x);
