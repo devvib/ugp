@@ -62,6 +62,13 @@ int main()
     // Initializing and calculating hi.
     vector<double> hi = calculate_hi(hij,xij);
 
+    // Calculating hfi
+    vector<double> hfi = calculatehfi(h_param, Feed_T);
+
+    // Assuming distillate as 'distillate'
+    vector<double> Vnew = calculate_Vnew(Hi, hi, Li, Vi, distillate, Feed, hfi);
+
+
   }
   return 0;
 }

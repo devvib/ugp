@@ -155,6 +155,37 @@ inline vector<double> calculate_hi(vector<vector<double>> &hij, vector<vector<do
     return hi;
 }
 
+vector<double> calculatehfi(vector<vector<double>> h_param, double& Feed_T)
+{
+    vector<double> hfi;
+
+    size_t numComponents = h_param.size();
+    size_t numStages = h_param[0].size();
+
+    hfi.resize(numComponents,-1);
+
+    hfi[1] = calculate_enthalpy(h_param[1],Feed_T);
+    hfi[2] = calculate_enthalpy(h_param[2],Feed_T);
+    return hfi;
+}
+
+vector<double> calculate_Vnew (vector<double> &Hi, vector<double> &hi, vector<double> &Li, vector<double> &Vi, double &distillate, double Feed, vector<double> hfi)
+{
+    vector<double> Vnew;
+
+    size_t numComponents = Hi.size();
+    
+    Vnew.resize(numComponents,-1);
+
+    Vnew = Vi;
+
+    Vnew[3] = ((Vi[2]*Hi[2])-(distillate*hi[2])-(Li[1]*hi[1]))/(Hi[3]-hi[2]);
+
+    Vnew[4] = ((Vi[3]*Hi[3])+(Li[4]*hi[3])-(Feed*(hfi[1]+hfi[2]))-(Vi[3]*hi[2])+(distillate*hi[2]))/(Hi[4]-hi[3]);
+
+    return Vnew;
+}
+
 
 
 #endif // ENERGY_SOLVER_H
