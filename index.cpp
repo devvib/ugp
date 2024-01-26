@@ -1,3 +1,15 @@
+/*
+1.5 0.5 0.5 101.325 57 0.5 0.5
+
+7840.8 16.466 0.009438
+10743.4 8.789 -0.010925
+
+0 28.808 0.02759
+0 17.912 0.0009
+
+14.3916 2795.82 230
+16.262 3799.89 226.35
+*/
 #include <bits/stdc++.h>
 #include "antoine_solver.h"
 #include "linear_system_solver.h"
@@ -49,28 +61,33 @@ int main()
     C[i] = C1;
   }
 
-  
-
-
-
-
-
-  
   // L1 = D*R;
   // V2 = D+L1;
   vector<double> T(no_of_stages+1),V(no_of_stages+1),
   L(no_of_stages+1);
   vector<vector<double>>Sij,lij,xij;
 
+  // Assumed All the temperatures.
+  T[1] = 60;
+  T[2] = 65;
+  T[3] = 70;
+  T[4] = 80;
+
+  // Assumed and Calculated V and L.
+  V[1] = 0;
+  V[3] = 1.25;
+  V[4] = 1.25;
+
+  L[1] = D*R;
+  V[2] = D+L[1];
+  L[2] = V[3]-D;
+  L[4] = Cond;
+  L[3] = V[4]+L[4];
 
 
   
   while (true)
   {
-    //what to initialise here??
-
-
-
    //loop2 needs T,V,L
     while (true)
     {
@@ -81,6 +98,9 @@ int main()
       vector<vector<double>> S = calculate_S(K, V, L,D);
 
       // make matrix A,X and B for A*X=C
+      vector<double> lf(no_of_comp);
+      lf[1] = F1;
+      lf[2] = F2;
       vector<vector<double>>l=matrix_solver(S,lf);
 
       // we got X all l
@@ -114,12 +134,18 @@ int main()
     vector<double> hi = calculate_hi(hij,xij);
 
     // Calculating hfi
-    vector<double> hfi = calculatehfi(h_param, Feed_T);
+    vector<double> hfi = calculatehfi(h_param, T_Feed);
 
     // Assuming distillate as 'distillate'
-    vector<double> Vnew = calculate_Vnew(Hi, hi, Li, Vi, distillate, F1, F2, hfi);
+    vector<double> Vnew = calculate_Vnew(Hi, hi, L, V, D, F1, F2, hfi);
 
-
+    if(accurate(Vnew,V)){V = Vnew;break;}
   }
+
+  for(auto it:V)
+  {
+    cout<<it<<" ";
+  }
+  cout<<endl;
   return 0;
 }
