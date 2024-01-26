@@ -3,17 +3,68 @@
 #include "linear_system_solver.h"
 #include "energy_solver.h"
 using namespace std;
+double R, D, Cond; //Cond == L4
 double P_total = 1;
 int no_of_comp = 2;
 int no_of_stages = 4;
-int feed_mass_flow = 1;
-double D=0.5;
+double T_Feed;
+double F1, F2;
+vector<vector<double>> H_param(no_of_comp,vector<double>(3));
+vector<vector<double>> h_param(no_of_comp,vector<double>(3));
+vector<double>A(no_of_comp+1),B(no_of_comp+1),C(no_of_comp+1);
+  
+
 int main()
 {
-  vector<double>T(no_of_stages+1),A(no_of_comp+1),
-  B(no_of_comp+1),C(no_of_comp+1),V(no_of_stages+1),
-  L(no_of_stages+1),lf(no_of_comp+1);
+  cout<<"Enter Reflux_ratio, Distillate, Condensate, Total_pressure, Temperature_of_Feed, Flow_rate_of_1_in_Feed, Flow_rate_of_2_in_Feed,"<<endl;
+  cin>>R>>D>>Cond>>P_total>>T_Feed>>F1>>F2;
+
+  cout<<"Enter the 'H' parameters for each component in order of A, B, C"<<endl;
+  for(size_t i = 1; i<=no_of_comp; i++)
+  {
+    double A1, B1, C1;
+    cin>>A1>>B1>>C1;
+    H_param[i][0] = A1;
+    H_param[i][1] = B1;
+    H_param[i][2] = C1;
+  }
+
+  cout<<"Enter the 'h' parameters for each component in order of A, B, C"<<endl;
+  for(size_t i = 1; i<=no_of_comp; i++)
+  {
+    double A1, B1, C1;
+    cin>>A1>>B1>>C1;
+    h_param[i][0] = A1;
+    h_param[i][1] = B1;
+    h_param[i][2] = C1;
+  }
+
+  cout<<"Enter the Antoine parameters for each component in order of A, B and C"<<endl;
+  for(size_t i = 1; i<=no_of_comp; i++)
+  {
+    double A1, B1, C1;
+    cin>>A1>>B1>>C1;
+    A[i] = A1;
+    B[i] = B1;
+    C[i] = C1;
+  }
+
+  
+
+
+
+
+
+  
+  // L1 = D*R;
+  // V2 = D+L1;
+  vector<double> T(no_of_stages+1),V(no_of_stages+1),
+  L(no_of_stages+1);
   vector<vector<double>>Sij,lij,xij;
+
+
+
+  
   while (true)
   {
     //what to initialise here??
@@ -66,7 +117,7 @@ int main()
     vector<double> hfi = calculatehfi(h_param, Feed_T);
 
     // Assuming distillate as 'distillate'
-    vector<double> Vnew = calculate_Vnew(Hi, hi, Li, Vi, distillate, Feed, hfi);
+    vector<double> Vnew = calculate_Vnew(Hi, hi, Li, Vi, distillate, F1, F2, hfi);
 
 
   }

@@ -169,8 +169,10 @@ vector<double> calculatehfi(vector<vector<double>> h_param, double& Feed_T)
     return hfi;
 }
 
-vector<double> calculate_Vnew (vector<double> &Hi, vector<double> &hi, vector<double> &Li, vector<double> &Vi, double &distillate, double Feed, vector<double> hfi)
+vector<double> calculate_Vnew (vector<double> &Hi, vector<double> &hi, vector<double> &Li, vector<double> &Vi, double &distillate, double F1, double F2, vector<double> hfi)
 {
+    double Feed = F1+F2;
+    double hf = ((F1*hfi[1])+(F2*hfi[2]))/Feed;
     vector<double> Vnew;
 
     size_t numComponents = Hi.size();
@@ -181,7 +183,7 @@ vector<double> calculate_Vnew (vector<double> &Hi, vector<double> &hi, vector<do
 
     Vnew[3] = ((Vi[2]*Hi[2])-(distillate*hi[2])-(Li[1]*hi[1]))/(Hi[3]-hi[2]);
 
-    Vnew[4] = ((Vi[3]*Hi[3])+(Li[4]*hi[3])-(Feed*(hfi[1]+hfi[2]))-(Vi[3]*hi[2])+(distillate*hi[2]))/(Hi[4]-hi[3]);
+    Vnew[4] = ((Vi[3]*Hi[3])+(Li[4]*hi[3])-(Feed*(hf))-(Vi[3]*hi[2])+(distillate*hi[2]))/(Hi[4]-hi[3]);
 
     return Vnew;
 }
