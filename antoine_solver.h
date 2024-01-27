@@ -9,7 +9,7 @@ using namespace std;
 // Function to calculate saturation vapor pressure using Antoine equation
 double calculateSaturationPressure(double T, double A, double B, double C)
 {
-    return pow(10, (A - B / (T + C)));
+    return exp(A - B / (T + C));
 }
 // Function to calculate the total vapor pressure equation
 double totalPressureEquation(double T, double x1, double A1, double B1, double C1, double x2, double A2, double B2, double C2)
@@ -22,11 +22,11 @@ double totalPressureEquation(double T, double x1, double A1, double B1, double C
 // Derivative of the total vapor pressure equation with respect to temperature
 double derivativeOfTotalPressureEquation(double T, double x1, double A1, double B1, double C1, double x2, double A2, double B2, double C2)
 {
-    return -x1 * B1 / ((T + C1) * log(10) * pow(10, (A1 - B1 / (T + C1)))) - x2 * B2 / ((T + C2) * log(10) * pow(10, (A2 - B2 / (T + C2))));
+    return (x1*B1*exp(A1 - B1 / (T + C1)) ) / ((T+C1)*(T+C1)) + (x2*B2*exp(A2 - B2 / (T + C2)) ) / ((T+C2)*(T+C2));
 }
 
 // Newton's method to solve for temperature
-double findTemperature(double initialGuess, double x1, double A1, double B1, double C1, double x2, double A2, double B2, double C2, double P_total, double tolerance)
+double findTemperature(double initialGuess, double x1, double A1, double B1, double C1, double x2, double A2, double B2, double C2, double P_total)
 {
     double T_old = initialGuess;
 
@@ -39,8 +39,7 @@ double findTemperature(double initialGuess, double x1, double A1, double B1, dou
         // Update temperature
         double T_new = T_old - f_T / f_prime_T;
 
-        // Check for convergence
-        if (abs(T_new - T_old) < tolerance)
+        if (abs(T_new - T_old) < 0.01)
         {
             break;
         }
@@ -75,7 +74,7 @@ vector<vector<double>> calculate_K(vector<double> A, vector<double> B, vector<do
     return Kij;
 }
 // function that return a 2d vector of S
-vector<vector<double>> calculate_S(vector<vector<double>> K, vector<double> V, vector<double> L, int D)
+vector<vector<double>> calculate_S(vector<vector<double>> K, vector<double> V, vector<double> L, float D)
 {
     int no_of_comp = size(K) - 1;
     int no_of_stages = size(K[0]) - 1;
@@ -126,10 +125,10 @@ vector<vector<double>>calculate_Ai(vector<vector<double>>S,int comp_no){
 
 }
 vector<double> temp_solver(vector<double> T,vector<double>A,vector<double>B,vector<double>C,vector<vector<double>>x,float P_total){
-    int no_of_stages;
-    double tolerance=0.01;
+    int no_of_stages=size(T)-1;
+
     for(int i=1;i<=no_of_stages;i++)
-     T[i]= findTemperature(T[i], x[1][i], A[1], B[1], C[1], x[2][i], A[2], B[2], C[2], P_total, tolerance);
+     T[i]= findTemperature(T[i], x[1][i], A[1], B[1], C[1], x[2][i], A[2], B[2], C[2], P_total);
      return T;
 }
 

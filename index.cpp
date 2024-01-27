@@ -1,22 +1,10 @@
-/*
-1.5 0.5 0.5 101.325 57 0.5 0.5
-
-7840.8 16.466 0.009438
-10743.4 8.789 -0.010925
-
-0 28.808 0.02759
-0 17.912 0.0009
-
-14.3916 2795.82 230
-16.262 3799.89 226.35
-*/
 #include <bits/stdc++.h>
 #include "antoine_solver.h"
 #include "linear_system_solver.h"
 #include "energy_solver.h"
 using namespace std;
 double R, D, Cond; //Cond == L4
-double P_total = 1;
+double P_total;
 int no_of_comp = 2;
 int no_of_stages = 4;
 double T_Feed;
@@ -98,7 +86,7 @@ int main()
       vector<vector<double>> S = calculate_S(K, V, L,D);
 
       // make matrix A,X and B for A*X=C
-      vector<double> lf(no_of_comp);
+      vector<double> lf(no_of_comp+1);
       lf[1] = F1;
       lf[2] = F2;
       vector<vector<double>>l=matrix_solver(S,lf);
@@ -111,6 +99,7 @@ int main()
       vector<double> Tnew= temp_solver(T,A,B,C,x,P_total);
       //breaking condition for T
       if(accurate(Tnew,T)){Sij=S,lij=l; T=Tnew;xij=x;break;}
+      T=Tnew;
     }
     // Initializing and calculating vij.
     vector<vector<double> > vij = calculate_vij(Sij,lij);
@@ -142,10 +131,6 @@ int main()
     if(accurate(Vnew,V)){V = Vnew;break;}
   }
 
-  for(auto it:V)
-  {
-    cout<<it<<" ";
-  }
-  cout<<endl;
+      
   return 0;
 }

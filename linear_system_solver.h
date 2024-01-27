@@ -8,13 +8,30 @@
 #include <vector>
 #include <iostream>
 #include "antoine_solver.h"
+using namespace std;
 
 // Function to solve the system of linear equations AX = B
-std::vector<double> solveLinearSystem(const std::vector<std::vector<double>>& A,
-                                      const std::vector<double>& B) {
+vector<double> solveLinearSystem(const vector<vector<double>>& A, const vector<double>& B) {
+ 
+      
+
     // Convert input vectors to Eigen matrices
-    Eigen::Map<const Eigen::MatrixXd> eigenA(A[0].data(), A.size(), A[0].size());
-    Eigen::Map<const Eigen::VectorXd> eigenB(B.data(), B.size());
+     size_t numCols = A[0].size();
+    Eigen::MatrixXd eigenA(A.size(), numCols);
+    Eigen::VectorXd eigenB(B.size());
+
+    // Copy data from vector<vector<double>> to Eigen::MatrixXd
+    for (size_t i = 0; i < A.size(); ++i) {
+        for (size_t j = 0; j < numCols; ++j) {
+            eigenA(i, j) = A[i][j];
+        }
+    }
+
+    // Copy data from vector<double> to Eigen::VectorXd
+    for (size_t i = 0; i < B.size(); ++i) {
+        eigenB(i) = B[i];
+    }
+
 
     // Solve for X using Eigen's linear solver
     Eigen::VectorXd eigenX = eigenA.colPivHouseholderQr().solve(eigenB);
