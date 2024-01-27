@@ -99,7 +99,6 @@ vector<vector<double>> calculate_x(vector<vector<double>> l)
 {
     int no_of_comp = size(l) ;
     int no_of_stages = size(l[0]);
-    vector<double> l(no_of_stages + 1, 0);
     vector<vector<double>> x(no_of_comp + 1, vector<double>(no_of_stages + 1, 0));
 
     for (int i = 1; i <= no_of_stages; i++)
@@ -126,7 +125,7 @@ vector<vector<double>>calculate_Ai(vector<vector<double>>S,int comp_no){
     return A;
 
 }
-vector<double> temp_solver(vector<double> T,vector<double>A,vector<double>B,vector<double>C,vector<vector<double>>x){
+vector<double> temp_solver(vector<double> T,vector<double>A,vector<double>B,vector<double>C,vector<vector<double>>x,float P_total){
     int no_of_stages;
     double tolerance=0.01;
     for(int i=1;i<=no_of_stages;i++)

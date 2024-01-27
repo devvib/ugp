@@ -21,8 +21,8 @@ int no_of_comp = 2;
 int no_of_stages = 4;
 double T_Feed;
 double F1, F2;
-vector<vector<double>> H_param(no_of_comp,vector<double>(3));
-vector<vector<double>> h_param(no_of_comp,vector<double>(3));
+vector<vector<double>> H_param(no_of_comp+1,vector<double>(3));
+vector<vector<double>> h_param(no_of_comp+1,vector<double>(3));
 vector<double>A(no_of_comp+1),B(no_of_comp+1),C(no_of_comp+1);
   
 
@@ -108,7 +108,7 @@ int main()
       vector<vector<double>>x=calculate_x(l);
 
       //  Find the temperature using Newton's method
-      vector<double> Tnew= temp_solver(T,A,B,C,x);
+      vector<double> Tnew= temp_solver(T,A,B,C,x,P_total);
       //breaking condition for T
       if(accurate(Tnew,T)){Sij=S,lij=l; T=Tnew;xij=x;break;}
     }
