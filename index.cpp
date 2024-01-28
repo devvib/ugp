@@ -16,10 +16,10 @@ vector<double>A(no_of_comp+1),B(no_of_comp+1),C(no_of_comp+1);
 
 int main()
 {
-  // cout<<"Enter Reflux_ratio, Distillate, Condensate, Total_pressure, Temperature_of_Feed, Flow_rate_of_1_in_Feed, Flow_rate_of_2_in_Feed,"<<endl;
+  cout<<"Enter Reflux_ratio, Distillate, Condensate, Total_pressure, Temperature_of_Feed, Flow_rate_of_1_in_Feed, Flow_rate_of_2_in_Feed,"<<endl;
   cin>>R>>D>>Cond>>P_total>>T_Feed>>F1>>F2;
 
-  // cout<<"Enter the 'H' parameters for each component in order of A, B, C"<<endl;
+  cout<<"Enter the 'H' parameters for each component in order of A, B, C"<<endl;
   for(size_t i = 1; i<=no_of_comp; i++)
   {
     double A1, B1, C1;
@@ -29,7 +29,7 @@ int main()
     H_param[i][2] = C1;
   }
 
-  // cout<<"Enter the 'h' parameters for each component in order of A, B, C"<<endl;
+  cout<<"Enter the 'h' parameters for each component in order of A, B, C"<<endl;
   for(size_t i = 1; i<=no_of_comp; i++)
   {
     double A1, B1, C1;
@@ -39,7 +39,7 @@ int main()
     h_param[i][2] = C1;
   }
 
-  // cout<<"Enter the Antoine parameters for each component in order of A, B and C"<<endl;
+  cout<<"Enter the Antoine parameters for each component in order of A, B and C"<<endl;
   for(size_t i = 1; i<=no_of_comp; i++)
   {
     double A1, B1, C1;
@@ -131,9 +131,20 @@ int main()
 
     if(accurate(Vnew,V)){V = Vnew;break;}
   }
-
-  L[2] = V[3]-D;
+   L[2] = V[3]-D;
   L[3] = V[4]+L[4];
+  cout<<endl<<"RESULTS: "<<endl;
+  cout<<"Temperature of columns : "<<endl;
+  for(int i=1;i<=no_of_stages;i++)cout<<T[i]<<" ";
+  cout<<endl;
+  cout<<"Vapour molar flow rate : "<<endl;
+  for(int i=1;i<=no_of_stages;i++)cout<<V[i]<<" ";
+  cout<<endl;
+  cout<<"Liquid molar flow rate : "<<endl;
+  for(int i=1;i<=no_of_stages;i++)cout<<L[i]<<" ";
+  cout<<endl;
+
+ 
       
   return 0;
 }
