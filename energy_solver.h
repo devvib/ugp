@@ -20,22 +20,18 @@ inline vector<vector<double>> calculate_vij(
 {
     vector<vector<double>> vij;
 
-    // Assuming Sij and lij have the same dimensions
     size_t numComponents = Sij.size();
-    size_t numStages = Sij[0].size(); // Assuming all components have the same number of stages
+    size_t numStages = Sij[0].size();
 
-    // Resize vij to match the dimensions of Sij and lij
     vij.resize(numComponents, vector<double>(numStages, 0.0));
 
-    // Calculate vij
-    for (size_t i = 1; i < numComponents; ++i)
+    for (int i = 1; i < numComponents; i++)
     {
-        for (size_t j = 2; j < numStages; ++j)
+        for (int j = 1; j < numStages; j++)
         {
-            vij[i][j] = Sij[i][j] * lij[i][j];
+            vij[i][j] = Sij[i][j] * lij[i-1][j-1];
         }
     }
-
     return vij;
 }
 
@@ -52,7 +48,7 @@ inline vector<vector<double>> calculate_Yij(
     Yij.resize(numComponents, vector<double>(numStages, 0.0));
 
     // Calculate Yij
-    for (size_t j = 2; j < numStages; ++j)
+    for (size_t j = 1; j < numStages; ++j)
     {
         double sumofall = 0.0;
         for (size_t i = 1; i < numComponents; ++i)
@@ -100,7 +96,7 @@ inline vector<vector<double>> calculate_hij(vector<vector<double>> &h_param, vec
 {
     vector<vector<double>> hij;
 
-    // Assuming H_param and T have the correct dimension
+    // Assuming h_param and T have the correct dimension
     size_t numComponents = h_param.size();
     size_t numStages = T.size(); // Assuming all components have the same number of stages
 
@@ -123,11 +119,12 @@ inline vector<double> calculate_Hi(vector<vector<double>> &Hij, vector<vector<do
 
     size_t numComponents = Hij.size();
     size_t numStages = Hij[0].size();
+    Hi.resize(numStages,0.0);
 
-    for(size_t j = 2; j<numStages; ++j)
+    for(size_t j = 1; j<numStages; j++)
     {
         double sumofallcomp = 0.0;
-        for(size_t i = 1; i<numComponents; ++i)
+        for(size_t i = 1; i<numComponents; i++)
         {
             sumofallcomp += (Yij[i][j]*Hij[i][j]);
         }
@@ -142,6 +139,7 @@ inline vector<double> calculate_hi(vector<vector<double>> &hij, vector<vector<do
 
     size_t numComponents = hij.size();
     size_t numStages = hij[0].size();
+    hi.resize(numStages,0.0);
 
     for(size_t j = 1; j<numStages; ++j)
     {

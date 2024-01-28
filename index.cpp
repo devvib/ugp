@@ -16,10 +16,10 @@ vector<double>A(no_of_comp+1),B(no_of_comp+1),C(no_of_comp+1);
 
 int main()
 {
-  cout<<"Enter Reflux_ratio, Distillate, Condensate, Total_pressure, Temperature_of_Feed, Flow_rate_of_1_in_Feed, Flow_rate_of_2_in_Feed,"<<endl;
+  // cout<<"Enter Reflux_ratio, Distillate, Condensate, Total_pressure, Temperature_of_Feed, Flow_rate_of_1_in_Feed, Flow_rate_of_2_in_Feed,"<<endl;
   cin>>R>>D>>Cond>>P_total>>T_Feed>>F1>>F2;
 
-  cout<<"Enter the 'H' parameters for each component in order of A, B, C"<<endl;
+  // cout<<"Enter the 'H' parameters for each component in order of A, B, C"<<endl;
   for(size_t i = 1; i<=no_of_comp; i++)
   {
     double A1, B1, C1;
@@ -29,7 +29,7 @@ int main()
     H_param[i][2] = C1;
   }
 
-  cout<<"Enter the 'h' parameters for each component in order of A, B, C"<<endl;
+  // cout<<"Enter the 'h' parameters for each component in order of A, B, C"<<endl;
   for(size_t i = 1; i<=no_of_comp; i++)
   {
     double A1, B1, C1;
@@ -39,7 +39,7 @@ int main()
     h_param[i][2] = C1;
   }
 
-  cout<<"Enter the Antoine parameters for each component in order of A, B and C"<<endl;
+  // cout<<"Enter the Antoine parameters for each component in order of A, B and C"<<endl;
   for(size_t i = 1; i<=no_of_comp; i++)
   {
     double A1, B1, C1;
@@ -54,6 +54,7 @@ int main()
   vector<double> T(no_of_stages+1),V(no_of_stages+1),
   L(no_of_stages+1);
   vector<vector<double>>Sij,lij,xij;
+  double qc, qr;
 
   // Assumed All the temperatures.
   T[1] = 60;
@@ -106,11 +107,7 @@ int main()
     // Initializing and calculating Yij.
     vector<vector<double> > Yij = calculate_Yij(vij);
 
-    // Assuming that we've taken Enthalpy parameters for every component in 2D vectors named H_param and h_param.
-
     // Initializing and calculating Hij.
-
-    //make H_param in A,B,C form if possible??
     vector<vector<double> > Hij = calculate_Hij(H_param,T);
 
     // Initializing and calculating hij.
@@ -127,10 +124,16 @@ int main()
 
     // Assuming distillate as 'distillate'
     vector<double> Vnew = calculate_Vnew(Hi, hi, L, V, D, F1, F2, hfi);
+    V = Vnew;
+
+    qc = V[2]*(Hi[2]-hi[2]);
+    qr = (V[4]*Hi[4])+(L[4]*hi[4])-((V[4]+L[4])*hi[3]);
 
     if(accurate(Vnew,V)){V = Vnew;break;}
   }
 
+  L[2] = V[3]-D;
+  L[3] = V[4]+L[4];
       
   return 0;
 }
