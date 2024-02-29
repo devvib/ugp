@@ -126,13 +126,14 @@ int main()
     vector<double> Vnew = calculate_Vnew(Hi, hi, L, V, D, F1, F2, hfi);
     V = Vnew;
 
-    qc = V[2]*(Hi[2]-hi[2]);
+    qc = V[2]*(Hi[2]-hi[1]);
     qr = (V[4]*Hi[4])+(L[4]*hi[4])-((V[4]+L[4])*hi[3]);
-
-    if(accurate(Vnew,V)){V = Vnew;break;}
+      
+    if(accurate(Vnew,V)){break;}
   }
    L[2] = V[3]-D;
   L[3] = V[4]+L[4];
+  cout<<"qc: "<<qc<<endl;
   cout<<endl<<"RESULTS: "<<endl;
   cout<<"Temperature of columns : "<<endl;
   for(int i=1;i<=no_of_stages;i++)cout<<T[i]<<" ";
