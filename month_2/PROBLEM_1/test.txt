@@ -23,10 +23,13 @@ MONTH 2:
 PROBLEM 1:Qc IS GIVEN AND R IS NOT GIVEN
 
 RESULTS:
-R: 1.45706
-Temperature of columns :
-60.085 72.4647 81.7795 91.4347
-Vapour molar flow rate :
-0 1.22853 1.15149 1.11779
-Liquid molar flow rate :
-0.728531 0.651492 1.61779 0.5
+R: 1.43464
+Temperature of columns :      
+59.9272 72.002 81.3562 91.0905
+
+Vapour molar flow rate :      
+0 1.21732 1.14089 1.09519     
+Liquid molar flow rate :      
+0.717321 0.640891 1.59519 0.5
+
+ 

@@ -56,7 +56,7 @@ int main()
   L(no_of_stages+1);
   vector<vector<double>>Sij,lij,xij;
   double qc, qr;
- qc=9535.85;
+ qc=9421;
   // Assumed All the temperatures.
   T[1] = 60;
   T[2] = 65;
@@ -127,14 +127,14 @@ R=1;
 
     // Assuming distillate as 'distillate'
     vector<double> Vnew = calculate_Vnew(Hi, hi, L, V, D, F1, F2, hfi);
-    V = Vnew;
 
 
-    V[2]=qc/(Hi[2]-hi[1]);
+    Vnew[2]=qc/(Hi[2]-hi[1]);
     //V2=qc/(H2-h1);
     // qr = (V[4]*Hi[4])+(L[4]*hi[4])-((V[4]+L[4])*hi[3]);
-    L[1]=V[2]-D;
-    if(accurate(Vnew,V)){break;}
+    L[1]=Vnew[2]-D;
+    if(accurate(Vnew,V)){V = Vnew;break;}
+    V = Vnew;
   }
   L[2] = V[3]-D;
   L[3] = V[4]+L[4];
