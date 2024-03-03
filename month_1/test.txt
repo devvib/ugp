@@ -8,3 +8,24 @@
 
 14.3916 2795.82 230
 16.262 3799.89 226.35
+
+
+RESULTS:
+Temperature of columns :
+59.6044 69.7226 80.2042 90.5601
+Vapour molar flow rate :
+0 1.25 1.16507 1.19293
+Liquid molar flow rate :
+0.75 0.665071 1.69293 0.5
+heat out qr: 9535.85
+heat given qr: 10605.7
+
+IMPROVED RESULTS:
+Temperature of columns :
+58.8719 67.7032 78.1708 88.8612
+Vapour molar flow rate :
+0 1.25 1.1682 1.11694
+Liquid molar flow rate :
+0.75 0.6682 1.61694 0.5 
+heat out qr: 9421
+heat given qr: 9760.04
