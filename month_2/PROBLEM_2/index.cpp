@@ -127,21 +127,20 @@ D=1;
 
     // Assuming distillate as 'distillate'
     vector<double> Vnew = calculate_Vnew(Hi, hi, L, V, D, F1, F2, hfi);
-    V = Vnew;
 
 
-    V[2]=qc/(Hi[2]-hi[1]);
-    //V2=qc/(H2-h1);
-    // qr = (V[4]*Hi[4])+(L[4]*hi[4])-((V[4]+L[4])*hi[3]);
-    L[1]=V[2]/(1+1/R);
+    Vnew[2]=qc/(Hi[2]-hi[1]);
+
+    L[1]=Vnew[2]/(1+1/R);
     D=L[1]/R;
     if(accurate(Vnew,V)){break;}
+    V = Vnew;
   }
   L[2] = V[3]-D;
   
   L[3] = V[4]+L[4];
   cout<<endl<<"RESULTS: "<<endl;
-  cout<<"R: "<<L[1]/D<<endl;
+  cout<<"D: "<<D<<endl;
   cout<<"Temperature of columns : "<<endl;
   for(int i=1;i<=no_of_stages;i++)cout<<T[i]<<" ";
   cout<<endl;
