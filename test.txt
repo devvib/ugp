@@ -1,10 +1,4 @@
-1.5 0.5 0.5 101.325 57 0.5 0.5
-
-7840.8 16.466 0.009438
-10743.4 8.789 -0.010925
-
-0 28.808 0.02759
-0 17.912 0.0009
-
-14.3916 2795.82 230
-16.262 3799.89 226.35
+1>Make problem simple by making claim or cases____1>on operation
+                                                  2>on initial state
+                                                  3>on final state
+2>Prove this claim by exhuative writing
