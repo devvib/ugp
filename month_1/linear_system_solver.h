@@ -4,7 +4,7 @@
 #define LINEAR_SYSTEM_SOLVER_H
 
 #include<algorithm>
-#include "Eigen/Dense"
+#include "../Eigen/Dense"
 #include <vector>
 #include <iostream>
 #include "antoine_solver.h"
