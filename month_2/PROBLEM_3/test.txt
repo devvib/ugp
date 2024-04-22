@@ -15,10 +15,11 @@ PROBLEM 3:Qr IS GIVEN AND R IS not GIVEN
 
 RESULTS:
 R :1.39181
-Temperature of columns :
-61.8726 74.7715 82.5022 91.8137        
-Vapour molar flow rate :
-0 1.1959 1.17031 1.08602
-Liquid molar flow rate :
-0.695905 0.670308 1.58602 0.5 
+Temperature of columns :        
+61.8726 74.7715 82.5022 91.8137 
+Vapour molar flow rate :        
+0 1.1959 1.17031 1.08602        
+Liquid molar flow rate :        
+0.695905 0.670308 1.58602 0.5   
+heat out qc: 9421
 heat given qr: 9760.04

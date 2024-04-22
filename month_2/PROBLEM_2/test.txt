@@ -17,9 +17,11 @@ PROBLEM 2:Qc IS GIVEN AND  D IS NOT GIVEN
 
 RESULTS:
 D: 0.527065
-Temperature of columns :
-57.0231 60.2524 68.8004 79.9643        
-Vapour molar flow rate :
-0 1.31809 1.25935 1.22061
-Liquid molar flow rate :
-0.790597 0.732287 1.72061 0.5
+Temperature of columns :        
+57.0231 60.2524 68.8004 79.9643 
+Vapour molar flow rate :        
+0 1.31809 1.25935 1.22061       
+Liquid molar flow rate :        
+0.790597 0.732287 1.72061 0.5   
+heat out qr: 9535.85
+heat given qr: 9973.95

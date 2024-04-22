@@ -23,4 +23,5 @@ Vapour molar flow rate :
 0 1.2483 1.23842 0.994795       
 Liquid molar flow rate :        
 0.748303 0.73842 1.49479 0.5    
+heat out qc: 9421
 heat given qr: 9760.04

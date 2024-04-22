@@ -169,7 +169,7 @@ int main()
   cout<<"Liquid molar flow rate : "<<endl;
   for(int i=1;i<=no_of_stages;i++)cout<<L[i]<<" ";
   cout<<endl;
-  // cout<<"heat out qc: "<<qc<<endl;
+  cout<<"heat out qc: "<<qc<<endl;
   cout<<"heat given qr: "<<qr<<endl;
 
  
