@@ -1,0 +1,53 @@
+1.5 0.5 0.5 101.325 57 0.5 0.5
+
+7840.8 16.466 0.009438
+10743.4 8.789 -0.010925
+
+0 28.808 0.02759
+0 17.912 0.0009
+
+14.3916 2795.82 230
+16.262 3799.89 226.35
+
+0.16 0.51
+
+
+MONTH 1:
+RESULTS:
+Temperature of columns :
+59.6044 69.7226 80.2042 90.5601
+Vapour molar flow rate :
+0 1.25 1.16507 1.19293
+Liquid molar flow rate :
+0.75 0.665071 1.69293 0.5 
+
+MONTH 2:
+
+PROBLEM 1:Qc IS GIVEN AND R IS NOT GIVEN
+
+RESULTS:
+R: 1.43464
+Temperature of columns :      
+59.9272 72.002 81.3562 91.0905
+
+Vapour molar flow rate :     
+0 1.21732 1.14089 1.09519     
+Liquid molar flow rate :
+0.717321 0.640891 1.59519 0.5
+
+MONTH 3:
+
+PROBLEM 4:Qc IS GIVEN AND R IS NOT GIVEN
+
+RESULTS:
+R: 1.53196
+Temperature of columns :        
+56.9245 58.4894 62.521 81.5275  
+Vapour molar flow rate :        
+0 1.26598 1.22001 1.07647       
+Liquid molar flow rate :        
+0.765978 0.720008 1.57647 0.5   
+heat out qr: 9421
+heat given qr: 9614.88
+
+ 
