@@ -5,10 +5,10 @@
 using namespace std;
 double R, D, Cond; //Cond == L4
 double P_total;
-int no_of_comp = 2;
+int no_of_comp = 3;
 int no_of_stages = 4;
 double T_Feed;
-double F1, F2;
+double F1, F2,F3;
 vector<vector<double>> H_param(no_of_comp+1,vector<double>(3));
 vector<vector<double>> h_param(no_of_comp+1,vector<double>(3));
 vector<double>A(no_of_comp+1),B(no_of_comp+1),C(no_of_comp+1);
@@ -17,7 +17,7 @@ vector<double>A(no_of_comp+1),B(no_of_comp+1),C(no_of_comp+1);
 int main()
 {
   cout<<"Enter Reflux_ratio, Distillate, Condensate, Total_pressure, Temperature_of_Feed, Flow_rate_of_1_in_Feed, Flow_rate_of_2_in_Feed,"<<endl;
-  cin>>R>>D>>Cond>>P_total>>T_Feed>>F1>>F2;
+  cin>>R>>D>>Cond>>P_total>>T_Feed>>F1>>F2>>F3;
 
   cout<<"Enter the 'H' parameters for each component in order of A, B, C"<<endl;
   for(size_t i = 1; i<=no_of_comp; i++)
@@ -72,7 +72,9 @@ int main()
   L[2] = V[3]-D;
   L[4] = Cond;
   L[3] = V[4]+L[4];
+  int ct=0;
 
+ vector<vector<double>>x_dash;
 
   
   while (true)
@@ -90,18 +92,24 @@ int main()
       vector<double> lf(no_of_comp+1);
       lf[1] = F1;
       lf[2] = F2;
-      vector<vector<double>>l=matrix_solver(S,lf);
-
+      lf[3]=F3;
+      vector<vector<double>>l=matrix_solver(S,lf,no_of_comp);
       // we got X all l
       // now we calculate all xij;
       vector<vector<double>>x=calculate_x(l);
+      x_dash=x;
+      // cout<<"x.size "<<x[0].size()<<endl;
 
       //  Find the temperature using Newton's method
-      vector<double> Tnew= temp_solver(T,A,B,C,x,P_total);
+      vector<double> Tnew= temp_solver(T,x,A,B,C,P_total);
+      // break;
       //breaking condition for T
+
       if(accurate(Tnew,T)){Sij=S,lij=l; T=Tnew;xij=x;break;}
       T=Tnew;
+      // if(ct++>1)break;
     }
+    // break;
     // Initializing and calculating vij.
     vector<vector<double> > vij = calculate_vij(Sij,lij);
     // Initializing and calculating Yij.
@@ -123,7 +131,7 @@ int main()
     vector<double> hfi = calculatehfi(h_param, T_Feed);
 
     // Assuming distillate as 'distillate'
-    vector<double> Vnew = calculate_Vnew(Hi, hi, L, V, D, F1, F2, hfi);
+    vector<double> Vnew = calculate_Vnew(Hi, hi, L, V, D, F1, F2,F3, hfi);
     
 
     qc = V[2]*(Hi[2]-hi[1]);
@@ -144,8 +152,14 @@ int main()
   cout<<"Liquid molar flow rate : "<<endl;
   for(int i=1;i<=no_of_stages;i++)cout<<L[i]<<" ";
   cout<<endl;
-  cout<<"heat out qr: "<<qc<<endl;
+  cout<<"heat out qc: "<<qc<<endl;
   cout<<"heat given qr: "<<qr<<endl;
+  cout<<"mole fractions: "<<endl;
+  for(auto it:x_dash){
+    for(auto itt:it)cout<<itt<<" ";
+    cout<<endl;
+    
+  }
 
  
       

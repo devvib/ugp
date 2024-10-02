@@ -57,9 +57,9 @@ vector<vector<int>> transposeMatrix(const vector<vector<int>>& matrix) {
 
     return transpose;
 }
- vector<vector<double>> matrix_solver(vector<vector<double>>S,vector<double> lf){
+ vector<vector<double>> matrix_solver(vector<vector<double>>S,vector<double> lf,int no_of_comp){
         vector<vector<double>>l;
-for(int i=1;i<=2;i++){
+for(int i=1;i<=no_of_comp;i++){
       vector<vector<double>> A=calculate_Ai(S,i);
       // vector<vector<double>> A2=calculate_Ai(S,2);
       vector<double> B={{0},{0},{-lf[i]},{0}};

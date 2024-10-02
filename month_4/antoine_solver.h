@@ -9,36 +9,67 @@ using namespace std;
 // Function to calculate saturation vapor pressure using Antoine equation
 double calculateSaturationPressure(double T, double A, double B, double C)
 {
+    // cout<<"exp A: "<<A<<"B: "<<B<<"C: "<<C<<"T: "<<T<<"ans: "<<exp(A - B / (T + C))<<endl;
     return exp(A - B / (T + C));
 }
 // Function to calculate the total vapor pressure equation
-double totalPressureEquation(double T, double x1, double A1, double B1, double C1, double x2, double A2, double B2, double C2)
-{
-    double P1 = calculateSaturationPressure(T, A1, B1, C1);
-    double P2 = calculateSaturationPressure(T, A2, B2, C2);
-    return x1 * P1 + x2 * P2;
+// double totalPressureEquation(double T, double x1, double A1, double B1, double C1, double x2, double A2, double B2, double C2)
+// {
+//     double P1 = calculateSaturationPressure(T, A1, B1, C1);
+//     double P2 = calculateSaturationPressure(T, A2, B2, C2);
+//     return x1 * P1 + x2 * P2;
+// }
+double totalPressureEquation(double T, vector<double>& x, vector<double>& A, vector<double>& B,vector<double>& C) {
+    double totalPressure = 0.0;
+    int no_of_comp=x.size()-1;
+    // cout<<"No. of comp: "<<no_of_comp<<endl;
+
+    for (size_t i = 1; i <= no_of_comp; ++i) {
+        double P = calculateSaturationPressure(T, A[i], B[i], C[i]);
+        totalPressure += x[i] * P;
+    // cout<<"pressure "<<x[i]<<" P: "<<P<<" ";
+    }
+
+    return totalPressure;
 }
 
 // Derivative of the total vapor pressure equation with respect to temperature
-double derivativeOfTotalPressureEquation(double T, double x1, double A1, double B1, double C1, double x2, double A2, double B2, double C2)
-{
-    return (x1*B1*exp(A1 - B1 / (T + C1)) ) / ((T+C1)*(T+C1)) + (x2*B2*exp(A2 - B2 / (T + C2)) ) / ((T+C2)*(T+C2));
+// double derivativeOfTotalPressureEquation(double T, double x1, double A1, double B1, double C1, double x2, double A2, double B2, double C2)
+// {
+//     return (x1*B1*exp(A1 - B1 / (T + C1)) ) / ((T+C1)*(T+C1)) + (x2*B2*exp(A2 - B2 / (T + C2)) ) / ((T+C2)*(T+C2));
+// }
+double derivativeOfTotalPressureEquation(double T, vector<double>& x, vector<double>& A, vector<double>& B, vector<double>& C) {
+    double derivative = 0.0;
+    int no_of_comp=x.size()-1;
+
+    for (size_t i = 1; i <= no_of_comp; ++i) {
+        double term = (x[i] * B[i] * exp(A[i] - B[i] / (T + C[i]))) / ((T + C[i]) * (T + C[i]));
+        derivative += term;
+    }
+
+    return derivative;
 }
 
 // Newton's method to solve for temperature
-double findTemperature(double initialGuess, double x1, double A1, double B1, double C1, double x2, double A2, double B2, double C2, double P_total)
+double findTemperature(double initialGuess, vector<double>x,vector<double>A,vector<double>B,vector<double>C, double P_total)
 {
     double T_old = initialGuess;
+    int ct=0;
 
     while (true)
     {
         // Calculate f(T) and f'(T)
-        double f_T = totalPressureEquation(T_old, x1, A1, B1, C1, x2, A2, B2, C2) - P_total;
-        double f_prime_T = derivativeOfTotalPressureEquation(T_old, x1, A1, B1, C1, x2, A2, B2, C2);
+        // double f_T = totalPressureEquation(T_old, x1, A1, B1, C1, x2, A2, B2, C2) - P_total;
+        double f_T = totalPressureEquation(T_old,x,A,B,C) - P_total;
+        double f_prime_T = derivativeOfTotalPressureEquation(T_old, x,A,B,C);
 
         // Update temperature
         double T_new = T_old - f_T / f_prime_T;
 
+        // cout<<"f_T "<<f_T<<" "<<f_prime_T<<" "<<T_new<<"|";
+        // break;
+        // if(ct++>1)break;
+// 
         if (abs(T_new - T_old) < 0.01)
         {
             break;
@@ -124,11 +155,23 @@ vector<vector<double>>calculate_Ai(vector<vector<double>>S,int comp_no){
     return A;
 
 }
-vector<double> temp_solver(vector<double> T,vector<double>A,vector<double>B,vector<double>C,vector<vector<double>>x,float P_total){
+vector<double> temp_solver(vector<double> T,vector<vector<double>>x,vector<double>A,vector<double>B,vector<double>C,float P_total){
     int no_of_stages=size(T)-1;
+    int no_of_comp=x.size()-1;
+    // cout<<"nocomp: "<<no_of_comp<<endl;
+    // for(auto it:x){
+    //     for(auto itt:it)cout<<itt<<' ';
+    //     cout<<endl;
+    // }
 
-    for(int i=1;i<=no_of_stages;i++)
-     T[i]= findTemperature(T[i], x[1][i], A[1], B[1], C[1], x[2][i], A[2], B[2], C[2], P_total);
+    
+
+    for(int i=1;i<=no_of_stages;i++){
+        vector<double>xi(no_of_comp+1);
+        for(int j=1;j<=no_of_comp;j++){
+            xi[j]=x[j][i];
+        }
+     T[i]= findTemperature(T[i],xi,A,B,C,P_total);}
      return T;
 }
 

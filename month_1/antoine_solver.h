@@ -114,7 +114,8 @@ vector<vector<double>> calculate_x(vector<vector<double>> l)
 }
 vector<vector<double>>calculate_Ai(vector<vector<double>>S,int comp_no){
     int i=comp_no;
-    vector<vector<double>>A={
+    vector<vector<double>>A=
+    {
         {-(1+S[i][1]),S[i][2],0,0},
         {1,-(1+S[i][2]),S[i][3],0},
         {0,1,-(1+S[i][3]),S[i][4]},

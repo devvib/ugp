@@ -72,6 +72,7 @@ int main()
   L[2] = V[3]-D;
   L[4] = Cond;
   L[3] = V[4]+L[4];
+   vector<vector<double>>x_dash;
 
 
   
@@ -95,7 +96,7 @@ int main()
       // we got X all l
       // now we calculate all xij;
       vector<vector<double>>x=calculate_x(l);
-
+       x_dash=x;
       //  Find the temperature using Newton's method
       vector<double> Tnew= temp_solver(T,A,B,C,x,P_total);
       //breaking condition for T
@@ -146,6 +147,12 @@ int main()
   cout<<endl;
   cout<<"heat out qr: "<<qc<<endl;
   cout<<"heat given qr: "<<qr<<endl;
+    cout<<"mole fractions: "<<endl;
+  for(auto it:x_dash){
+    for(auto itt:it)cout<<itt<<" ";
+    cout<<endl;
+    
+  }
 
  
       
