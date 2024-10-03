@@ -9,16 +9,9 @@ using namespace std;
 // Function to calculate saturation vapor pressure using Antoine equation
 double calculateSaturationPressure(double T, double A, double B, double C)
 {
-    // cout<<"exp A: "<<A<<"B: "<<B<<"C: "<<C<<"T: "<<T<<"ans: "<<exp(A - B / (T + C))<<endl;
     return exp(A - B / (T + C));
 }
-// Function to calculate the total vapor pressure equation
-// double totalPressureEquation(double T, double x1, double A1, double B1, double C1, double x2, double A2, double B2, double C2)
-// {
-//     double P1 = calculateSaturationPressure(T, A1, B1, C1);
-//     double P2 = calculateSaturationPressure(T, A2, B2, C2);
-//     return x1 * P1 + x2 * P2;
-// }
+
 double totalPressureEquation(double T, vector<double>& x, vector<double>& A, vector<double>& B,vector<double>& C) {
     double totalPressure = 0.0;
     int no_of_comp=x.size()-1;
@@ -34,10 +27,6 @@ double totalPressureEquation(double T, vector<double>& x, vector<double>& A, vec
 }
 
 // Derivative of the total vapor pressure equation with respect to temperature
-// double derivativeOfTotalPressureEquation(double T, double x1, double A1, double B1, double C1, double x2, double A2, double B2, double C2)
-// {
-//     return (x1*B1*exp(A1 - B1 / (T + C1)) ) / ((T+C1)*(T+C1)) + (x2*B2*exp(A2 - B2 / (T + C2)) ) / ((T+C2)*(T+C2));
-// }
 double derivativeOfTotalPressureEquation(double T, vector<double>& x, vector<double>& A, vector<double>& B, vector<double>& C) {
     double derivative = 0.0;
     int no_of_comp=x.size()-1;
@@ -111,9 +100,9 @@ vector<vector<double>> calculate_S(vector<vector<double>> K, vector<double> V, v
     int no_of_stages = size(K[0]) - 1;
     vector<vector<double>> S(no_of_comp + 1, vector<double>(no_of_stages + 1, 0));
 
-    for (int i = 1; i < no_of_comp + 1; i++)
+    for (int i = 1; i <= no_of_comp; i++)
 
-        for (int j = 1; j < no_of_stages + 1; j++)
+        for (int j = 1; j <= no_of_stages; j++)
         {
 
             if (j == 1)
@@ -145,17 +134,34 @@ vector<vector<double>> calculate_x(vector<vector<double>> l)
 }
 vector<vector<double>>calculate_Ai(vector<vector<double>>S,int comp_no){
     int i=comp_no;
-    vector<vector<double>>A={
-        {-(1+S[i][1]),S[i][2],0,0},
-        {1,-(1+S[i][2]),S[i][3],0},
-        {0,1,-(1+S[i][3]),S[i][4]},
-        {0,0,1,-(1+S[i][4])},
+    int no_comp=S.size();
+    int no_of_stage=S[0].size();
+    // vector<vector<double>>A={
+    //     {-(1+S[i][1]),S[i][2],0,0},
+    //     {1,-(1+S[i][2]),S[i][3],0},
+    //     {0,1,-(1+S[i][3]),S[i][4]},
+    //     {0,0,1,-(1+S[i][4])},
 
-    };
-    for(auto it:A){
-        for(auto itt:it)cout<<itt<<" ";
-        cout<<endl;
+    // };
+
+     vector<vector<double>> A(no_of_stage-1, vector<double>(no_of_stage-1, 0)); // Initialize n*n matrix with 0
+
+    // Loop through and fill the matrix
+    for (int j = 0; j < no_of_stage-1; ++j)
+    {
+        if (j > 0)
+        {
+            A[j][j-1] = 1; // Sub-diagonal (below the main diagonal)
+        }
+        A[j][j] = -(1 + S[i][j+1]); // Main diagonal (1-based indexing for S)
+        if (j < no_of_stage-2) {
+            A[j][j+1] = S[i][j+2]; // Super-diagonal (above the main diagonal)
+        }
     }
+    // for(auto it:A){
+    //     for(auto itt:it)cout<<itt<<" ";
+    //     cout<<endl;
+    // }
 
     return A;
 
@@ -168,9 +174,6 @@ vector<double> temp_solver(vector<double> T,vector<vector<double>>x,vector<doubl
     //     for(auto itt:it)cout<<itt<<' ';
     //     cout<<endl;
     // }
-
-    
-
     for(int i=1;i<=no_of_stages;i++){
         vector<double>xi(no_of_comp+1);
         for(int j=1;j<=no_of_comp;j++){
