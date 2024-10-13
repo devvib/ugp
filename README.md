@@ -28,3 +28,31 @@ Determine enthalpy parameters (Hij and hij) for each component in both liquid an
 Mass and Energy Balances:
 
 Implement mass and energy balances to ensure consistency in the distillation process.
+Multicomponent Distillation Simulation
+Overview
+This project simulates a multicomponent distillation process using C++. It calculates temperature, vapor, and liquid flows, balancing energy and mass for a 2-component, 4-stage distillation process.
+
+# Multicomponent Distillation Simulation
+
+## Overview
+This project simulates a multicomponent distillation process using C++. It calculates temperature, vapor, and liquid flows, balancing energy and mass for a 2-component, 4-stage distillation process.
+
+## Project Structure
+- **index.cpp**: Core simulation logic.
+- **antoine.h**: Manages the temperature-pressure relationship using Antoine’s equation.
+- **linear_equation_solver.h**: Solves linear systems essential to the simulation.
+- **energy_solver.h**: Handles energy balance computations.
+
+## Skills Demonstrated
+- **Modular Design**: Clear separation of concerns across different headers improves code maintainability.
+- **Numerical Methods**: Implements solvers for energy and linear equations, showcasing problem-solving abilities.
+- **C++ Best Practices**: Use of OOP, memory management, and standard libraries.
+
+## Compilation and Usage
+
+To compile and run the simulation:
+
+```bash
+g++ index.cpp -o index
+./index
+
