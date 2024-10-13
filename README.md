@@ -39,9 +39,5 @@ The code simulates multicomponent distillation using rigorous methods. It involv
 
 ---
 
-## Multicomponent Distillation Simulation
-
-### Overview
-This project simulates a multicomponent distillation process using C++. It calculates temperature, vapor, and liquid flows, balancing energy and mass for a 2-component, 4-stage distillation process.
 
 
